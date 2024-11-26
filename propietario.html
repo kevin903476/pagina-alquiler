@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD de Propietario</title>
+    <link rel="stylesheet" href="http://localhost/proyecto-dos/style/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="cabecera">
+        <h1>CRUD de Propietario</h1>
+        <img src="http://localhost/proyecto-dos/img/logo.png" alt="" width="250px" height="150px">
+        
+      </div>
+      <div class="botones">
+        <a href="http://localhost/proyecto-dos/casa.html"><button>Casa</button></a>
+      
+        <a href="http://localhost/proyecto-dos/inquilino.html" style="margin-left: 15px;"><button>Inquilino</button></a>
+      </div>
+      <div class="containerForm">
+        <form id="crudForm">
+          <label>
+            DNI:
+            <input type="text" id="dni" required />
+          </label>
+          <label>
+            Nombre:
+            <input type="text" id="nombre" required />
+          </label>
+          <label>
+            Teléfono:
+            <input type="text" id="telefono" required />
+          </label>
+          <label>
+            Email:
+            <input type="email" id="email" required />
+          </label>
+          <div class="botonesContainer">
+            <button type="button" id="agregar">Agregar</button>
+            <button type="button" id="editar" disabled>Editar</button>
+            <button type="button" id="eliminar" disabled>Eliminar</button>
+            <button type="button" id="limpiar">Limpiar</button>
+          </div>
+          
+        </form>
+        <form id="buscarForm">
+          <label>
+            Buscar:
+            <input type="text" id="dniBuscar" required placeholder="DNI" />
+          </label>
+          <div class="botonesContainer">
+            <button type="button" id="buscar">Buscar</button>
+            <button type="button" id="verTodos">Ver Todos</button>
+          </div>
+        </form>
+      </div>
+      
+
+      <div class="containerTabla">
+        <table id="tablaRegistros">
+          <thead>
+            <tr>
+              <th>DNI</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Registros dinámicos -->
+          </tbody>
+        </table>
+      </div>
+     
+    </div>
+  </body>
+  <script src="http://localhost/proyecto-dos/js/propietario.js"></script>
+</html>

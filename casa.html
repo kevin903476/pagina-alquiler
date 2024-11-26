@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRUD de Casa</title>
+    <link rel="stylesheet" href="http://localhost/proyecto-dos/style/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="cabecera">
+        <h1>CRUD de Casa</h1>
+        <img src="http://localhost/proyecto-dos/img/logo.png" alt="" width="250px" height="150px">
+        
+        
+        
+      </div>
+      <div class="botones">
+        <a href="http://localhost/proyecto-dos/propietario.html"><button>Propietario</button></a>
+      
+        <a href="http://localhost/proyecto-dos/inquilino.html" style="margin-left: 15px;"><button>Inquilino</button></a>
+      </div>
+      
+      <div class="containerForm">
+
+        <form id="crudForm">
+          <label>
+            Id Casa:
+            <input type="text" id="idCasa" required />
+          </label>
+          <label>
+            Direccion:
+            <input type="text" id="direccion" required />
+          </label>
+          <label>
+            Ciudad:
+            <input type="text" id="ciudad" required />
+          </label>
+          <label>
+            Precio Alquiler:
+            <input type="email" id="precioAlquiler" required />
+          </label>
+          <label>
+            DNI Propietario:
+            <input type="email" id="dniPropietario" required />
+          </label>
+          <div class="botonesContainer">
+            <button type="button" id="agregar">Agregar</button>
+            <button type="button" id="editar" disabled>Editar</button>
+            <button type="button" id="eliminar" disabled>Eliminar</button>
+            <button type="button" id="limpiar">Limpiar</button>
+          </div>
+          
+        </form>
+        <form id="buscarForm">
+          <label>
+            Buscar:
+            <input type="text" id="idCasaBuscar" required placeholder="ID CASA" />
+          </label>
+          <div class="botonesContainer">
+            <button type="button" id="buscar">Buscar</button>
+            <button type="button" id="verTodos">Ver Todos</button>
+          </div>
+        </form>
+      </div>
+      
+
+      <div class="containerTabla">
+        <table id="tablaRegistros">
+          <thead>
+            <tr>
+              <th>Id Casa</th>
+              <th>Direccion</th>
+              <th>Ciudad</th>
+              <th>Precio Alquiler</th>
+              <th>DNI Propietario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Registros dinámicos -->
+          </tbody>
+        </table>
+      </div>
+     
+    </div>
+  </body>
+  <script src="http://localhost/proyecto-dos/js/casa.js"></script>
+</html>
