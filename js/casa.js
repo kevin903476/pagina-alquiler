@@ -100,25 +100,29 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function agregarRegistro() {
     const datos = {
-      //id_casa: idCasaInput.value,
       direccion: direccionInput.value,
       ciudad: ciudadInput.value,
       precio_alquiler: precioAlquilerInput.value,
       DNI_propietario: dniPropietarioInput.value,
     };
-
+  
     fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
     })
       .then((respuesta) => respuesta.json())
-      .then(() => {
-        limpiarFormulario();
-        inicializarTabla();
+      .then((data) => {
+        if (data.success) {
+          limpiarFormulario();
+          inicializarTabla();
+        } else {
+          // Si el propietario ya está registrado, muestra un alert
+          alert(data.message || "Hubo un error al agregar el registro.");
+        }
       })
       .catch((error) => {
-        alert.error("Error al agregar registro:", error);
+        alert("Error al agregar registro:", error);
       });
   }
 
