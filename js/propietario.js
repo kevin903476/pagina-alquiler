@@ -99,13 +99,21 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarRegistro() {
+    const dni = dniInput.value;
+  
+    // Verificar si el DNI comienza con 3 o 4
+    if (!/^[34]/.test(dni)) {
+      alert("El DNI debe comenzar con 3 o 4.");
+      return; // Detener la ejecución si el DNI es inválido
+    }
+  
     const datos = {
-      DNI: dniInput.value,
+      DNI: dni,
       nombre: nombreInput.value,
       telefono: telefonoInput.value,
       email: emailInput.value,
     };
-
+  
     // Realiza la solicitud al API utilizando Fetch
     fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "POST", // Método HTTP
@@ -114,31 +122,43 @@ window.addEventListener("DOMContentLoaded", () => {
     })
       .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
       .then((datos) => {
-        limpiarFormulario();
-        inicializarTabla();
+        if (datos.error) {
+          alert(datos.error); // Mostrar el mensaje de error si el servidor lo devuelve
+        } else {
+          limpiarFormulario();
+          inicializarTabla();
+        }
       })
-      .catch((error) => {});
+      .catch((error) => {
+        alert("Error al agregar el propietario:", error);
+      });
   }
 
   function editarRegistro() {
     const datos = {
-      DNI: dniInput.value,
-      nombre: nombreInput.value,
-      telefono: telefonoInput.value,
-      email: emailInput.value,
+        DNI: dniInput.value,
+        nombre: nombreInput.value,
+        telefono: telefonoInput.value,
+        email: emailInput.value,
     };
 
     fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-      method: "PUT", // Método HTTP
-      headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
-      body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
+        method: "PUT", // Método HTTP
+        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+        body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
     })
-      .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
-      .then((datos) => {
-        inicializarTabla();
-      })
-      .catch((error) => {});
-  }
+    .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+    .then((datos) => {
+        if (datos.error) {
+            alert(datos.error); // Mostrar el mensaje de error si el servidor lo devuelve
+        } else {
+            inicializarTabla();
+        }
+    })
+    .catch((error) => {
+         alert("Error al editar el propietario:", error); // Mostrar error en caso de fallo
+    });
+}
 
   function eliminarRegistro() {
     const datos = {

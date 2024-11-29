@@ -103,15 +103,23 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarRegistro() {
+    const dni = dniInput.value;
+    
+    // Validar si el DNI comienza con 1 o 2
+    if (!dni.match(/^[12]/)) {
+      alert("El DNI debe comenzar con 1 o 2.");
+      return; // No continúa con el envío si la validación falla
+    }
+  
     const datos = {
-      DNI: dniInput.value,
+      DNI: dni,
       nombre: nombreInput.value,
       telefono: telefonoInput.value,
       email: emailInput.value,
       fecha_inicio_alquiler: fechaInicioInput.value,
       id_casa: idCasaInput.value,
     };
-
+  
     fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -126,6 +134,7 @@ window.addEventListener("DOMContentLoaded", () => {
         console.error("Error al agregar el registro:", error);
       });
   }
+  
 
   function editarRegistro() {
     const datos = {
@@ -136,20 +145,27 @@ window.addEventListener("DOMContentLoaded", () => {
       fecha_inicio_alquiler: fechaInicioInput.value,
       id_casa: idCasaInput.value,
     };
-
+  
     fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
     })
       .then((respuesta) => respuesta.json())
-      .then(() => {
-        inicializarTabla();
+      .then((data) => {
+        // Verificar si hubo un error en el backend
+        if (data.error) {
+          alert("Error: " + data.error); // Mostrar el error al usuario
+        } else {
+          inicializarTabla(); // Si todo está bien, actualizamos la tabla
+        }
       })
       .catch((error) => {
         console.error("Error al editar el registro:", error);
+        alert("Hubo un problema al editar el registro.");
       });
   }
+  
 
   function eliminarRegistro() {
     const datos = { DNI: dniInput.value };

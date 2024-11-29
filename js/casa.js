@@ -105,7 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
       precio_alquiler: precioAlquilerInput.value,
       DNI_propietario: dniPropietarioInput.value,
     };
-  
+
     fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -118,37 +118,38 @@ window.addEventListener("DOMContentLoaded", () => {
           inicializarTabla();
         } else {
           // Si el propietario ya está registrado, muestra un alert
-          alert(data.message || "Hubo un error al agregar el registro.");
+          alert(data.message || "El DNI del propietario ya está registrado");
         }
       })
       .catch((error) => {
         alert("Error al agregar registro:", error);
       });
-  }
+}
 
-  function editarRegistro() {
-    const datos = {
-      id_casa: idCasaInput.value,
-      direccion: direccionInput.value,
-      ciudad: ciudadInput.value,
-      precio_alquiler: precioAlquilerInput.value,
-      DNI_propietario: dniPropietarioInput.value,
-    };
-    
-    fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
+function editarRegistro() {
+  const datos = {
+    id_casa: idCasaInput.value,
+    direccion: direccionInput.value,
+    ciudad: ciudadInput.value,
+    precio_alquiler: precioAlquilerInput.value,
+    // Solo agregamos el DNI_propietario si el campo no está vacío
+    DNI_propietario: dniPropietarioInput.value || null, // Si está vacío, lo dejamos como null
+  };
+
+  fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos),
+  })
+    .then((respuesta) => respuesta.json())
+    .then(() => {
+      limpiarTabla();
+      inicializarTabla();
     })
-      .then((respuesta) => respuesta.json())
-      .then(() => {
-        limpiarTabla();
-        inicializarTabla();
-      })
-      .catch((error) => {
-        alert.error("Error al editar registro:", error);
-      });
-  }
+    .catch((error) => {
+      alert("Error al editar registro:", error);
+    });
+}
 
   function eliminarRegistro() {
     const datos = { id_casa: idCasaInput.value };
