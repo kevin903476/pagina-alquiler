@@ -104,28 +104,33 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function agregarRegistro() {
     const datos = {
-      DNI: dni,
-      nombre: nombreInput.value,
-      telefono: telefonoInput.value,
-      email: emailInput.value,
-      fecha_inicio_alquiler: fechaInicioInput.value,
-      id_casa: idCasaInput.value,
+        DNI: dniInput.value,
+        nombre: nombreInput.value,
+        telefono: telefonoInput.value,
+        email: emailInput.value,
+        fecha_inicio_alquiler: fechaInicioInput.value,
+        id_casa: idCasaInput.value,
     };
-  
+
     fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
     })
-      .then((respuesta) => respuesta.json())
-      .then(() => {
-        limpiarFormulario();
-        inicializarTabla();
-      })
-      .catch((error) => {
-        alert("Error al agregar el registro:", error);
-      });
-  }
+    .then((respuesta) => respuesta.json())
+    .then((data) => {
+        if (data.success) {
+            limpiarFormulario();
+            inicializarTabla();
+        } else {
+            // Muestra un alert si el DNI ya pertenece a un propietario
+            alert("El DNI ya le pertenece a un propietario");
+        }
+    })
+    .catch((error) => {
+        alert("El DNI ya existe" + error.message);
+    });
+}
   
 
   function editarRegistro() {

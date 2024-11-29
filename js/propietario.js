@@ -100,31 +100,31 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function agregarRegistro() {
     const datos = {
-      DNI: dni,
-      nombre: nombreInput.value,
-      telefono: telefonoInput.value,
-      email: emailInput.value,
+        DNI: dniInput.value,
+        nombre: nombreInput.value,
+        telefono: telefonoInput.value,
+        email: emailInput.value,
     };
-  
-    // Realiza la solicitud al API utilizando Fetch
+
     fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-      method: "POST", // Método HTTP
-      headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
-      body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
     })
-      .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
-      .then((datos) => {
-        if (datos.error) {
-          alert(datos.error); // Mostrar el mensaje de error si el servidor lo devuelve
+    .then((respuesta) => respuesta.json()) // Procesa la respuesta del servidor
+    .then((data) => {
+        if (data.success) {
+            limpiarFormulario();
+            inicializarTabla();
         } else {
-          limpiarFormulario();
-          inicializarTabla();
+            // Muestra el mensaje de error si el servidor lo devuelve
+            alert("El DNI ingresado ya lo tiene un inquilino");
         }
-      })
-      .catch((error) => {
-        alert("Error al agregar el propietario:", error);
-      });
-  }
+    })
+    .catch((error) => {
+        alert("El DNI ya existe");
+    });
+}
 
   function editarRegistro() {
     const datos = {
