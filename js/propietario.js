@@ -32,7 +32,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function inicializarTabla() {
     // Datos iniciales opcionales
-    fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "GET", // Método HTTP
       headers: { "Content-Type": "application/json" },
     })
@@ -115,7 +115,7 @@ window.addEventListener("DOMContentLoaded", () => {
     };
   
     // Realiza la solicitud al API utilizando Fetch
-    fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "POST", // Método HTTP
       headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
       body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
@@ -142,7 +142,7 @@ window.addEventListener("DOMContentLoaded", () => {
         email: emailInput.value,
     };
 
-    fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
         method: "PUT", // Método HTTP
         headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
         body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
@@ -165,7 +165,7 @@ window.addEventListener("DOMContentLoaded", () => {
       DNI: dniInput.value,
     };
 
-    fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "DELETE", // Método HTTP
       headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
       body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
@@ -183,7 +183,7 @@ window.addEventListener("DOMContentLoaded", () => {
       DNI: dniInputBuscar.value,
     };
 
-    fetch("http://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "PATCH", // Método HTTP
       headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
       body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
