@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
   limpiarBtn.addEventListener("click", limpiarFormulario);
 
   function inicializarTabla() {
-    fetch("http://localhost/proyecto-alquiler/controlador/casa.php", {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -107,7 +107,7 @@ window.addEventListener("DOMContentLoaded", () => {
       DNI_propietario: dniPropietarioInput.value,
     };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/casa.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -118,7 +118,7 @@ window.addEventListener("DOMContentLoaded", () => {
         inicializarTabla();
       })
       .catch((error) => {
-        console.error("Error al agregar registro:", error);
+        alert.error("Error al agregar registro:", error);
       });
   }
 
@@ -131,7 +131,7 @@ window.addEventListener("DOMContentLoaded", () => {
       DNI_propietario: dniPropietarioInput.value,
     };
     
-    fetch("http://localhost/proyecto-alquiler/controlador/casa.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -142,14 +142,14 @@ window.addEventListener("DOMContentLoaded", () => {
         inicializarTabla();
       })
       .catch((error) => {
-        console.error("Error al editar registro:", error);
+        alert.error("Error al editar registro:", error);
       });
   }
 
   function eliminarRegistro() {
     const datos = { id_casa: idCasaInput.value };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/casa.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -160,14 +160,14 @@ window.addEventListener("DOMContentLoaded", () => {
         inicializarTabla();
       })
       .catch((error) => {
-        console.error("Error al eliminar registro:", error);
+        alert.error("Error al eliminar registro:", error);
       });
   }
 
   function buscar() {
     const datos = { id_casa: idCasaBuscarInput.value };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/casa.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -178,7 +178,7 @@ window.addEventListener("DOMContentLoaded", () => {
         llenarTabla(datos);
       })
       .catch((error) => {
-        console.error("Error al buscar registro:", error);
+        alert.error("Error al buscar registro:", error);
       });
   }
 });

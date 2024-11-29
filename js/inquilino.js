@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
   limpiarBtn.addEventListener("click", limpiarFormulario);
 
   function inicializarTabla() {
-    fetch("http://localhost/proyecto-alquiler/controlador/inquilino.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
@@ -112,7 +112,7 @@ window.addEventListener("DOMContentLoaded", () => {
       id_casa: idCasaInput.value,
     };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/inquilino.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -137,7 +137,7 @@ window.addEventListener("DOMContentLoaded", () => {
       id_casa: idCasaInput.value,
     };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/inquilino.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -154,7 +154,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function eliminarRegistro() {
     const datos = { DNI: dniInput.value };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/inquilino.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
@@ -172,7 +172,7 @@ window.addEventListener("DOMContentLoaded", () => {
   function buscar() {
     const datos = { DNI: dniInputBuscar.value };
 
-    fetch("http://localhost/proyecto-alquiler/controlador/inquilino.php", {
+    fetch("http://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(datos),
