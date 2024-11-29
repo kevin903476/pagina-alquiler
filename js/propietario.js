@@ -99,14 +99,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarRegistro() {
-    const dni = dniInput.value;
-  
-    // Verificar si el DNI comienza con 3 o 4
-    if (!/^[34]/.test(dni)) {
-      alert("El DNI debe comenzar con 3 o 4.");
-      return; // Detener la ejecución si el DNI es inválido
-    }
-  
     const datos = {
       DNI: dni,
       nombre: nombreInput.value,
@@ -174,6 +166,7 @@ window.addEventListener("DOMContentLoaded", () => {
       .then((datos) => {
         limpiarFormulario();
         inicializarTabla();
+        alert('Se elimino correctamente');
       })
       .catch((error) => {});
   }

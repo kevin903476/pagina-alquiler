@@ -162,6 +162,7 @@ function editarRegistro() {
       .then(() => {
         limpiarFormulario();
         inicializarTabla();
+        alert('Se elimino correctamente');
       })
       .catch((error) => {
         alert.error("Error al eliminar registro:", error);

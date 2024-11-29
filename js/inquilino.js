@@ -103,14 +103,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarRegistro() {
-    const dni = dniInput.value;
-    
-    // Validar si el DNI comienza con 1 o 2
-    if (!dni.match(/^[12]/)) {
-      alert("El DNI debe comenzar con 1 o 2.");
-      return; // No continúa con el envío si la validación falla
-    }
-  
     const datos = {
       DNI: dni,
       nombre: nombreInput.value,
@@ -131,7 +123,7 @@ window.addEventListener("DOMContentLoaded", () => {
         inicializarTabla();
       })
       .catch((error) => {
-        console.error("Error al agregar el registro:", error);
+        alert("Error al agregar el registro:", error);
       });
   }
   
@@ -161,7 +153,6 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       })
       .catch((error) => {
-        console.error("Error al editar el registro:", error);
         alert("Hubo un problema al editar el registro.");
       });
   }
@@ -179,6 +170,7 @@ window.addEventListener("DOMContentLoaded", () => {
       .then(() => {
         limpiarFormulario();
         inicializarTabla();
+        alert('Se elimino correctamente');
       })
       .catch((error) => {
         console.error("Error al eliminar el registro:", error);
