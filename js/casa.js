@@ -100,30 +100,30 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function agregarRegistro() {
     const datos = {
-      direccion: direccionInput.value,
-      ciudad: ciudadInput.value,
-      precio_alquiler: precioAlquilerInput.value,
-      DNI_propietario: dniPropietarioInput.value,
+        direccion: direccionInput.value,
+        ciudad: ciudadInput.value,
+        precio_alquiler: precioAlquilerInput.value,
+        DNI_propietario: dniPropietarioInput.value,
     };
 
     fetch("http://api-alquiler-production.up.railway.app/controlador/casa.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
     })
-      .then((respuesta) => respuesta.json())
-      .then((data) => {
+    .then((respuesta) => respuesta.json())
+    .then((data) => {
         if (data.success) {
-          limpiarFormulario();
-          inicializarTabla();
+            limpiarFormulario();
+            inicializarTabla();
         } else {
-          // Si el propietario ya está registrado, muestra un alert
-          alert(data.message || "El DNI del propietario ya está registrado");
+            // Si el propietario ya está registrado, muestra un alert
+            alert(data.message || "El DNI del propietario ya está registrado");
         }
-      })
-      .catch((error) => {
-        alert("Error al agregar registro:", error);
-      });
+    })
+    .catch((error) => {
+        alert("Error al agregar registro: " + error.message); // Concatenamos el mensaje de error
+    });
 }
 
 function editarRegistro() {
