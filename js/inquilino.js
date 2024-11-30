@@ -111,6 +111,9 @@ window.addEventListener("DOMContentLoaded", () => {
         fecha_inicio_alquiler: fechaInicioInput.value,
         id_casa: idCasaInput.value,
     };
+    if (buscarDNInquilino(datos.DNI)) {
+      alert('DNI ya existe en un propietario');
+    }else{
 
     fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
         method: "POST",
@@ -123,15 +126,32 @@ window.addEventListener("DOMContentLoaded", () => {
             limpiarFormulario();
             inicializarTabla();
         } else {
-            // Muestra un alert si el DNI ya pertenece a un propietario
             alert("El DNI ya le pertenece a un propietario");
         }
     })
     .catch((error) => {
         alert("El DNI ya existe" + error.message);
     });
+  }
 }
-  
+function buscarDNInquilino(dniInput) {
+  const datos = { DNI: dniInput.value };
+  fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos),
+  })
+    .then((respuesta) => respuesta.json())
+    .then((datos) => {
+      if(datos.length>0){
+        return true;
+      }
+    })
+    .catch((error) => {
+      console.error("Error al buscar el registro:", error);
+    });
+    return false;
+}
 
   function editarRegistro() {
     const datos = {
