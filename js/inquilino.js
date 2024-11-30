@@ -146,6 +146,7 @@ function buscarDNInquilino(datos) {
   })
     .then((respuesta) => respuesta.json())
     .then((datos) => {
+      console.log(datos.length);
       if(datos.length>0){
         return true;
       }
