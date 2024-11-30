@@ -150,6 +150,21 @@ function buscarDNInquilino(dniInput) {
     .catch((error) => {
       console.error("Error al buscar el registro:", error);
     });
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+      method: "PATCH", // Método HTTP
+      headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+      body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
+    })
+      .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+      .then((datos) => {
+        if(datos.length>0){
+          return true;
+        }
+      })
+      .catch((error) => {
+        // Maneja errores durante la solicitud y los muestra en la página
+        //document.getElementById("mensaje_resultado").innerText = "Error: " + error.message;
+      });
     return false;
 }
 
