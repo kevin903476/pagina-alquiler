@@ -98,7 +98,7 @@ window.addEventListener("DOMContentLoaded", () => {
     eliminarBtn.disabled = true;
   }
 
-  function agregarRegistro() {
+  async function agregarRegistro() {
     const datos = {
         DNI: dniInput.value,
         nombre: nombreInput.value,
@@ -108,7 +108,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const datos2 = {
       DNI: dniInput.value,
   };
-    if (!buscarDNInquilino(datos2)) {
+    if (buscarDNInquilino(datos2)) {
       alert('El DNI ya existe en un propietario o en un inquilino');
     }else{
 
@@ -179,7 +179,7 @@ window.addEventListener("DOMContentLoaded", () => {
       .catch((error) => {});
   }
 
-  function buscarDNInquilino(datos) {
+  async function buscarDNInquilino(datos) {
 
     fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
       method: "PATCH",
