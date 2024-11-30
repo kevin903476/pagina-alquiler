@@ -114,7 +114,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const datos2 = {
       DNI: dniInput.value,
   };
-    if (buscarDNInquilino(datos2)) {
+    if (!buscarDNInquilino(datos2)) {
       alert('DNI ya existe en un propietario');
     }else{
 
