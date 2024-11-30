@@ -105,6 +105,12 @@ window.addEventListener("DOMContentLoaded", () => {
         telefono: telefonoInput.value,
         email: emailInput.value,
     };
+    const datos2 = {
+      DNI: dniInput.value,
+  };
+    if (!buscarDNInquilino(datos2)) {
+      alert('El DNI ya existe en un propietario o en un inquilino');
+    }else{
 
     fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
         method: "POST",
@@ -124,6 +130,7 @@ window.addEventListener("DOMContentLoaded", () => {
     .catch((error) => {
         alert("El DNI ya existe");
     });
+  }
 }
 
   function editarRegistro() {
@@ -152,6 +159,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 }
 
+
   function eliminarRegistro() {
     const datos = {
       DNI: dniInput.value,
@@ -171,6 +179,39 @@ window.addEventListener("DOMContentLoaded", () => {
       .catch((error) => {});
   }
 
+  function buscarDNInquilino(datos) {
+
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    })
+      .then((respuesta) => respuesta.json())
+      .then((datos) => {
+        if(datos.length>0){
+          return true;
+        }
+      })
+      .catch((error) => {
+        console.error("Error al buscar el registro:", error);
+      });
+      fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+        method: "PATCH", // Método HTTP
+        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+        body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
+      })
+        .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+        .then((datos) => {
+          if(datos.length>0){
+            return true;
+          }
+        })
+        .catch((error) => {
+          // Maneja errores durante la solicitud y los muestra en la página
+          //document.getElementById("mensaje_resultado").innerText = "Error: " + error.message;
+        });
+      return false;
+  }
   function buscar() {
     const datos = {
       DNI: dniInputBuscar.value,

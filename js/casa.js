@@ -117,11 +117,11 @@ window.addEventListener("DOMContentLoaded", () => {
             limpiarFormulario();
             inicializarTabla();
         } else {
-            alert(data.message || "El DNI del propietario ya está registrado");
+            alert('No existe el propietario');
         }
     })
     .catch((error) => {
-        alert("Error al agregar registro: " + error.message); // Concatenamos el mensaje de error
+        alert('NO EXISTE EL PROPIETARIO'); 
     });
 }
 
