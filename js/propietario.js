@@ -100,38 +100,43 @@ window.addEventListener("DOMContentLoaded", () => {
 
   async function agregarRegistro() {
     const datos = {
-        DNI: dniInput.value,
-        nombre: nombreInput.value,
-        telefono: telefonoInput.value,
-        email: emailInput.value,
-    };
-    const datos2 = {
       DNI: dniInput.value,
-  };
-    if (buscarDNInquilino(datos2)) {
-      alert('El DNI ya existe en un propietario o en un inquilino');
-    }else{
-
-    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
+      nombre: nombreInput.value,
+      telefono: telefonoInput.value,
+      email: emailInput.value,
+      fecha_inicio_alquiler: fechaInicioInput.value,
+      id_casa: idCasaInput.value,
+    };
+  
+    const datos2 = { DNI: dniInput.value };
+  
+    // Validar si el DNI ya existe
+    const existeDNI = await buscarDNInquilino(datos2);
+  
+    if (existeDNI) {
+      alert("El DNI ya existe en un propietario o en un inquilino");
+      return;
+    }
+  
+    // Proceder con la inserción si el DNI no existe
+    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
     })
-    .then((respuesta) => respuesta.json()) // Procesa la respuesta del servidor
-    .then((data) => {
+      .then((respuesta) => respuesta.json())
+      .then((data) => {
         if (data.success) {
-            limpiarFormulario();
-            inicializarTabla();
+          limpiarFormulario();
+          inicializarTabla();
         } else {
-            // Muestra el mensaje de error si el servidor lo devuelve
-            alert("El DNI ingresado ya lo tiene un inquilino");
+          alert("La casa no existe");
         }
-    })
-    .catch((error) => {
-        alert("El DNI ya existe");
-    });
+      })
+      .catch((error) => {
+        alert("Error al agregar el registro:", error);
+      });
   }
-}
 
   function editarRegistro() {
     const datos = {
@@ -180,37 +185,35 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   async function buscarDNInquilino(datos) {
-
-    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    })
-      .then((respuesta) => respuesta.json())
-      .then((datos) => {
-        if(datos.length>0){
-          return true;
-        }
-      })
-      .catch((error) => {
-        console.error("Error al buscar el registro:", error);
+    try {
+      // Buscar en la tabla de inquilinos
+      const respuestaInquilino = await fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
       });
-      fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-        method: "PATCH", // Método HTTP
-        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
-        body: JSON.stringify(datos), // Convierte el objeto datos en formato JSON para enviarlo
-      })
-        .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
-        .then((datos) => {
-          if(datos.length>0){
-            return true;
-          }
-        })
-        .catch((error) => {
-          // Maneja errores durante la solicitud y los muestra en la página
-          //document.getElementById("mensaje_resultado").innerText = "Error: " + error.message;
-        });
+      const datosInquilino = await respuestaInquilino.json();
+      if (datosInquilino.length > 0) {
+        return true; // Encontrado en inquilinos
+      }
+  
+      // Buscar en la tabla de propietarios
+      const respuestaPropietario = await fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      });
+      const datosPropietario = await respuestaPropietario.json();
+      if (datosPropietario.length > 0) {
+        return true; // Encontrado en propietarios
+      }
+  
+      // No encontrado en ninguna tabla
       return false;
+    } catch (error) {
+      console.error("Error al buscar el registro:", error);
+      return false;
+    }
   }
   function buscar() {
     const datos = {
