@@ -111,7 +111,10 @@ window.addEventListener("DOMContentLoaded", () => {
         fecha_inicio_alquiler: fechaInicioInput.value,
         id_casa: idCasaInput.value,
     };
-    if (buscarDNInquilino(datos.DNI)) {
+    const datos2 = {
+      DNI: dniInput.value,
+  };
+    if (buscarDNInquilino(datos2)) {
       alert('DNI ya existe en un propietario');
     }else{
 
@@ -127,15 +130,16 @@ window.addEventListener("DOMContentLoaded", () => {
             inicializarTabla();
         } else {
             alert("El DNI ya le pertenece a un propietario");
+            return false;
         }
     })
     .catch((error) => {
-        alert("El DNI ya existe" + error.message);
+        alert("El DNI ya existe en la tabla inquilino");
     });
   }
 }
-function buscarDNInquilino(dniInput) {
-  const datos = { DNI: dniInput.value };
+function buscarDNInquilino(datos) {
+
   fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
