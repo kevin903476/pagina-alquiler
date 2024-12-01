@@ -134,28 +134,9 @@ window.addEventListener("DOMContentLoaded", () => {
       if (data.length >= 1) {
         alert("El DNI existe en Propietario")
       }else{
-        fetch(
-          "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos),
-          }
-        )
-        .then((respuesta) => respuesta.json())
-        .then((data) => {
-          // Verificar si hubo un error en el backend
-          if (data.error) {
-            alert("Error: " + data.error); // Mostrar el error al usuario
-          } else {
-            limpiarFormulario();
-            inicializarTabla(); // Si todo está bien, actualizamos la tabla
-          }
-        })
-        .catch((error) => {
-          alert("Hubo un problema al registrar inquilino.");
-        });
+        alert("si puede")
 
+        
       }
 
 
@@ -164,7 +145,27 @@ window.addEventListener("DOMContentLoaded", () => {
       alert("Hubo un problema.");
     });
 
-   
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      }
+    )
+    .then((respuesta) => respuesta.json())
+    .then((data) => {
+      // Verificar si hubo un error en el backend
+      if (data.error) {
+        alert("Error: " + data.error); // Mostrar el error al usuario
+      } else {
+        limpiarFormulario();
+        inicializarTabla(); // Si todo está bien, actualizamos la tabla
+      }
+    })
+    .catch((error) => {
+      alert("Hubo un problema al registrar inquilino.");
+    });
   }
 
   function editarRegistro() {
