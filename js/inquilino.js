@@ -148,12 +148,6 @@ window.addEventListener("DOMContentLoaded", () => {
           alert(error)
         });
 
-
-
-
-
-    
-    
     if (existe) {
       alert('El DNI ya existe en un propietario o en un inquilino');
     }else{
@@ -164,15 +158,13 @@ window.addEventListener("DOMContentLoaded", () => {
       })
       .then((respuesta) => respuesta.json())
       .then((data) => {
-          if (data.success) {
+          
               limpiarFormulario();
               inicializarTabla();
-          }else{
-            alert('LA CASA NO EXISTE ')
-          }
+          
       })
       .catch((error) => {
-          alert('La casa no existe');
+          alert(error);
       });
   }
 }
