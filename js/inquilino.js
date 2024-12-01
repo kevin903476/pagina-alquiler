@@ -102,42 +102,81 @@ window.addEventListener("DOMContentLoaded", () => {
     eliminarBtn.disabled = true;
   }
 
-  async function agregarRegistro() {
+ function agregarRegistro() {
+    var existe = false
+
     const datos = {
-        DNI: dniInput.value,
-        nombre: nombreInput.value,
-        telefono: telefonoInput.value,
-        email: emailInput.value,
-        fecha_inicio_alquiler: fechaInicioInput.value,
-        id_casa: idCasaInput.value,
-    };
-    const datos2 = {
       DNI: dniInput.value,
-  };
-    if (!buscarDNInquilino(datos2)) {
-      alert('El DNI ya existe en un propietario o en un inquilino');
-    }else{
+      nombre: nombreInput.value,
+      telefono: telefonoInput.value,
+      email: emailInput.value,
+      fecha_inicio_alquiler: fechaInicioInput.value,
+      id_casa: idCasaInput.value,
+    };
+
+    const datosB = {
+      DNI: dniInput.value
+    };
 
     fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosB),
     })
-    .then((respuesta) => respuesta.json())
-    .then((data) => {
-        if (data.success) {
-            limpiarFormulario();
-            inicializarTabla();
-        }else{
-          alert('LA CASA NO EXISTE ')
+      .then((respuesta) => respuesta.json())
+      .then((datosB) => {
+        console.log(datosB.length);
+        if(datos.length>0){
+          existe = true;
         }
-    })
-    .catch((error) => {
-        alert('La casa no existe');
-    });
+      })
+      .catch((error) => {
+        console.error("Error al buscar el registro:", error);
+      });
+      fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+        method: "PATCH", // Método HTTP
+        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+        body: JSON.stringify(datosB), // Convierte el objeto datos en formato JSON para enviarlo
+      })
+        .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+        .then((datosB) => {
+          if(datos.length>0){
+            existe = true;
+          }
+        })
+        .catch((error) => {
+          alert(error)
+        });
+
+
+
+
+
+    
+    
+    if (existe) {
+      alert('El DNI ya existe en un propietario o en un inquilino');
+    }else{
+      fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos),
+      })
+      .then((respuesta) => respuesta.json())
+      .then((data) => {
+          if (data.success) {
+              limpiarFormulario();
+              inicializarTabla();
+          }else{
+            alert('LA CASA NO EXISTE ')
+          }
+      })
+      .catch((error) => {
+          alert('La casa no existe');
+      });
   }
 }
-async function buscarDNInquilino(datos) {
+/* async function buscarDNInquilino(datos) {
 
   fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
     method: "PATCH",
@@ -170,7 +209,7 @@ async function buscarDNInquilino(datos) {
         //document.getElementById("mensaje_resultado").innerText = "Error: " + error.message;
       });
     return false;
-}
+} */
 
   function editarRegistro() {
     const datos = {
