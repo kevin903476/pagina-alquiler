@@ -106,7 +106,7 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarRegistro() {
-    const datos = {
+    const datosIn = {
       DNI: dniInput.value,
       nombre: nombreInput.value,
       telefono: telefonoInput.value,
@@ -136,7 +136,7 @@ window.addEventListener("DOMContentLoaded", () => {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos),
+            body: JSON.stringify(datosIn),
           }
         )
         .then((respuesta) => respuesta.json())
