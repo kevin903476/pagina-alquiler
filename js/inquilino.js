@@ -189,6 +189,8 @@ window.addEventListener("DOMContentLoaded", () => {
         if (data.error) {
           alert("Error: " + data.error); // Mostrar el error al usuario
         } else {
+          alert("Actualizado Correctamente");
+          limpiarFormulario();
           inicializarTabla(); // Si todo está bien, actualizamos la tabla
         }
       })

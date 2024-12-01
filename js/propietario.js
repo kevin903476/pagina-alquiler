@@ -172,6 +172,8 @@ window.addEventListener("DOMContentLoaded", () => {
         if (datos.error) {
             alert(datos.error); // Mostrar el mensaje de error si el servidor lo devuelve
         } else {
+            alert("Actualizado Correctamente");
+            limpiarFormulario();
             inicializarTabla();
         }
     })

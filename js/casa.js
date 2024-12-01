@@ -140,7 +140,8 @@ function editarRegistro() {
   })
     .then((respuesta) => respuesta.json())
     .then(() => {
-      limpiarTabla();
+      alert("Actualizado Correctamente")
+      limpiarFormulario();
       inicializarTabla();
     })
     .catch((error) => {
