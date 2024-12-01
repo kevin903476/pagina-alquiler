@@ -109,16 +109,12 @@ window.addEventListener("DOMContentLoaded", () => {
     fetch("https://api-alquiler-production.up.railway.app/controlador/casa.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos),
+        body: JSON.stringify(datos)
     })
     .then((respuesta) => respuesta.json())
     .then((data) => {
-      if (data.error) {
-        alert("Error: " + data.error); // Mostrar el error al usuario
-      } else {
         limpiarFormulario();
-        inicializarTabla(); // Si todo está bien, actualizamos la tabla
-      }
+        inicializarTabla();
     })
     .catch((error) => {
         alert('Hubo un problema al ingresar Casa'); 
