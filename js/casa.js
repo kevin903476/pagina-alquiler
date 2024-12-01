@@ -116,12 +116,10 @@ window.addEventListener("DOMContentLoaded", () => {
         if (data.success) {
             limpiarFormulario();
             inicializarTabla();
-        } else {
-            alert('No existe el propietario');
-        }
+        } 
     })
     .catch((error) => {
-        alert('NO EXISTE EL PROPIETARIO'); 
+        alert('Hubo un problema al ingresar Casa'); 
     });
 }
 
