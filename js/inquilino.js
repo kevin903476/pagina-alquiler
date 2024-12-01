@@ -101,73 +101,64 @@ window.addEventListener("DOMContentLoaded", () => {
     editarBtn.disabled = true;
     eliminarBtn.disabled = true;
   }
-
- function agregarRegistro() {
-    var existe = false
-
+  async function agregarRegistro() {
     const datos = {
-      DNI: dniInput.value,
-      nombre: nombreInput.value,
-      telefono: telefonoInput.value,
-      email: emailInput.value,
-      fecha_inicio_alquiler: fechaInicioInput.value,
-      id_casa: idCasaInput.value,
+        DNI: dniInput.value,
+        nombre: nombreInput.value,
+        telefono: telefonoInput.value,
+        email: emailInput.value,
+        fecha_inicio_alquiler: fechaInicioInput.value,
+        id_casa: idCasaInput.value,
     };
 
     const datosB = {
-      DNI: dniInput.value
+        DNI: dniInput.value,
     };
 
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datosB),
-    })
-      .then((respuesta) => respuesta.json())
-      .then((datosB) => {
-        console.log(datosB.length);
-        if(datos.length>=1){
-          existe = true;
+    try {
+        // Verificar si el DNI existe en inquilinos
+        const respuestaInquilino = await fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosB),
+        });
+        const resultadoInquilino = await respuestaInquilino.json();
+
+        // Verificar si el DNI existe en propietarios
+        const respuestaPropietario = await fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosB),
+        });
+        const resultadoPropietario = await respuestaPropietario.json();
+
+        // Validar existencia del DNI
+        if (resultadoInquilino.length > 0 || resultadoPropietario.length > 0) {
+            alert('El DNI ya existe en un propietario o en un inquilino');
+            return;
         }
-      })
-      .catch((error) => {
-        console.error("Error al buscar el registro:", error);
-      });
-      fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-        method: "PATCH", // Método HTTP
-        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
-        body: JSON.stringify(datosB), // Convierte el objeto datos en formato JSON para enviarlo
-      })
-        .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
-        .then((datosB) => {
-          if(datos.length>=1){
-            existe = true;
-          }
-        })
-        .catch((error) => {
-          console.error("Error al buscar el registro:", error);
+
+        // Si no existe, agregar el nuevo registro
+        const respuestaAgregar = await fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datos),
         });
 
-    if (existe == true) {
-      alert('El DNI ya existe en un propietario o en un inquilino');
-    }else{
-      fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos)
-      })
-      .then((respuesta) => respuesta.json())
-      .then((datos) => {
-          
-              limpiarFormulario();
-              inicializarTabla();
-          
-      })
-      .catch((error) => {
-          alert(error);
-      });
-  }
+        if (!respuestaAgregar.ok) {
+            throw new Error('Error al agregar el registro.');
+        }
+
+        const datosAgregados = await respuestaAgregar.json();
+        limpiarFormulario();
+        inicializarTabla();
+        alert('Registro agregado con éxito');
+    } catch (error) {
+        console.error("Error al agregar el registro:", error);
+        alert('Ocurrió un error al agregar el registro.');
+    }
 }
+
 
 
   function editarRegistro() {
