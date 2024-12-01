@@ -101,7 +101,8 @@ window.addEventListener("DOMContentLoaded", () => {
     editarBtn.disabled = true;
     eliminarBtn.disabled = true;
   }
-  async function agregarRegistro() {
+
+  function agregarRegistro() {
     const datos = {
         DNI: dniInput.value,
         nombre: nombreInput.value,
@@ -115,49 +116,54 @@ window.addEventListener("DOMContentLoaded", () => {
         DNI: dniInput.value,
     };
 
-    try {
-        // Verificar si el DNI existe en inquilinos
-        const respuestaInquilino = await fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datosB),
+    // Verificar si el DNI existe en inquilinos
+    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datosB),
+    })
+        .then((respuestaInquilino) => respuestaInquilino.json())
+        .then((resultadoInquilino) => {
+            if (resultadoInquilino.length > 0) {
+                alert('El DNI ya existe en la lista de inquilinos');
+            }
+
+            // Verificar si el DNI existe en propietarios
+            return fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datosB),
+            });
+        })
+        .then((respuestaPropietario) => respuestaPropietario.json())
+        .then((resultadoPropietario) => {
+            if (resultadoPropietario.length > 0) {
+                alert('El DNI ya existe en la lista de propietarios');
+            }
+
+            // Si no existe en ninguna de las dos listas, agregar el nuevo registro
+            return fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos),
+            });
+        })
+        .then((respuestaAgregar) => {
+            if (!respuestaAgregar.ok) {
+                alert('Error al agregar el registro.');
+            }
+            return respuestaAgregar.json();
+        })
+        .then(() => {
+            limpiarFormulario();
+            inicializarTabla();
+            alert('Registro agregado con éxito');
+        })
+        .catch((error) => {
+            alert(error.message);
         });
-        const resultadoInquilino = await respuestaInquilino.json();
-
-        // Verificar si el DNI existe en propietarios
-        const respuestaPropietario = await fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datosB),
-        });
-        const resultadoPropietario = await respuestaPropietario.json();
-
-        // Validar existencia del DNI
-        if (resultadoInquilino.length > 0 || resultadoPropietario.length > 0) {
-            alert('El DNI ya existe en un propietario o en un inquilino');
-            return;
-        }
-
-        // Si no existe, agregar el nuevo registro
-        const respuestaAgregar = await fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datos),
-        });
-
-        if (!respuestaAgregar.ok) {
-            throw new Error('Error al agregar el registro.');
-        }
-
-        const datosAgregados = await respuestaAgregar.json();
-        limpiarFormulario();
-        inicializarTabla();
-        alert('Registro agregado con éxito');
-    } catch (error) {
-        console.error("Error al agregar el registro:", error);
-        alert('Ocurrió un error al agregar el registro.');
-    }
 }
+
 
 
 
