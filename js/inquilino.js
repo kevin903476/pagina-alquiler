@@ -119,19 +119,16 @@ window.addEventListener("DOMContentLoaded", () => {
       DNI: dniInput.value,
     };
 
-
-    fetch(
-      "https://api-alquiler-production.up.railway.app/controlador/propietario.php",
-      {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosB),
-      }
-    )
-    .then((respuesta) => respuesta.json())
-    .then((data) => {
-      console.log(data.length)
-      if (data.length >= 1) {
+    fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
+      method: "PATCH", // Método HTTP
+      headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+      body: JSON.stringify(datosB), // Convierte el objeto datos en formato JSON para enviarlo
+    })
+      .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+      .then((datos) => {
+        
+        console.log(datos.length)
+      if (datos.length >= 1) {
         alert("El DNI existe en Propietario")
       }else{
         fetch(
@@ -159,12 +156,12 @@ window.addEventListener("DOMContentLoaded", () => {
         
       }
 
+      })
+      .catch((error) => {
+        alert("Hubo un problema");
+      });
 
-    })
-    .catch((error) => {
-      alert("Hubo un problema.");
-    });
-
+  
     
   }
 
