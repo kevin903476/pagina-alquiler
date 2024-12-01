@@ -113,9 +113,13 @@ window.addEventListener("DOMContentLoaded", () => {
     })
     .then((respuesta) => respuesta.json())
     .then((data) => {
-        console(data)
-        limpiarFormulario();
-        inicializarTabla();
+          // Verificar si hubo un error en el backend
+          if (data.error) {
+            alert("Error: " + data.error); // Mostrar el error al usuario
+          } else {
+            limpiarFormulario();
+            inicializarTabla(); // Si todo está bien, actualizamos la tabla
+          }
     })
     .catch((error) => {
         alert('Hubo un problema al ingresar Casa'); 
