@@ -126,7 +126,7 @@ window.addEventListener("DOMContentLoaded", () => {
       .then((respuesta) => respuesta.json())
       .then((datosB) => {
         console.log(datosB.length);
-        if(datos.length>0){
+        if(datos.length>=1){
           existe = true;
         }
       })
@@ -140,12 +140,12 @@ window.addEventListener("DOMContentLoaded", () => {
       })
         .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
         .then((datosB) => {
-          if(datos.length>0){
+          if(datos.length>=1){
             existe = true;
           }
         })
         .catch((error) => {
-          alert(error)
+          console.error("Error al buscar el registro:", error);
         });
 
     if (existe) {
@@ -157,7 +157,7 @@ window.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify(datos),
       })
       .then((respuesta) => respuesta.json())
-      .then((data) => {
+      .then((datos) => {
           
               limpiarFormulario();
               inicializarTabla();
