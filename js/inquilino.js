@@ -130,7 +130,7 @@ window.addEventListener("DOMContentLoaded", () => {
     )
     .then((respuesta) => respuesta.json())
     .then((data) => {
-     
+      console.log(data.length)
       if (data.length >= 1) {
         alert("El DNI existe en Propietario")
       }else{
