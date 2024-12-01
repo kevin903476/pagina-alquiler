@@ -34,10 +34,13 @@ window.addEventListener("DOMContentLoaded", () => {
   limpiarBtn.addEventListener("click", limpiarFormulario);
 
   function inicializarTabla() {
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
       .then((respuesta) => respuesta.json())
       .then((respuesta) => {
         limpiarTabla();
@@ -104,68 +107,35 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function agregarRegistro() {
     const datos = {
-        DNI: dniInput.value,
-        nombre: nombreInput.value,
-        telefono: telefonoInput.value,
-        email: emailInput.value,
-        fecha_inicio_alquiler: fechaInicioInput.value,
-        id_casa: idCasaInput.value,
+      DNI: dniInput.value,
+      nombre: nombreInput.value,
+      telefono: telefonoInput.value,
+      email: emailInput.value,
+      fecha_inicio_alquiler: fechaInicioInput.value,
+      id_casa: idCasaInput.value,
     };
-
-    const datosB = {
-        DNI: dniInput.value,
-    };
-
-    // Verificar si el DNI existe en inquilinos
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-        method: "PATCH",
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosB),
+        body: JSON.stringify(datos),
+      }
+    )
+    .then((respuesta) => respuesta.json())
+    .then((data) => {
+      // Verificar si hubo un error en el backend
+      if (data.error) {
+        alert("Error: " + data.error); // Mostrar el error al usuario
+      } else {
+        limpiarFormulario();
+        inicializarTabla(); // Si todo está bien, actualizamos la tabla
+      }
     })
-        .then((respuestaInquilino) => respuestaInquilino.json())
-        .then((resultadoInquilino) => {
-            if (resultadoInquilino.length > 0) {
-                alert('El DNI ya existe en la lista de inquilinos');
-            }
-
-            // Verificar si el DNI existe en propietarios
-            return fetch("https://api-alquiler-production.up.railway.app/controlador/propietario.php", {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datosB),
-            });
-        })
-        .then((respuestaPropietario) => respuestaPropietario.json())
-        .then((resultadoPropietario) => {
-            if (resultadoPropietario.length > 0) {
-                alert('El DNI ya existe en la lista de propietarios');
-            }
-
-            // Si no existe en ninguna de las dos listas, agregar el nuevo registro
-            return fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datos),
-            });
-        })
-        .then((respuestaAgregar) => {
-            if (!respuestaAgregar.ok) {
-                alert('Error al agregar el registro.');
-            }
-            return respuestaAgregar.json();
-        })
-        .then(() => {
-            limpiarFormulario();
-            inicializarTabla();
-            alert('Registro agregado con éxito');
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-}
-
-
-
+    .catch((error) => {
+      alert("Hubo un problema al editar el registro.");
+    });
+  }
 
   function editarRegistro() {
     const datos = {
@@ -176,12 +146,15 @@ window.addEventListener("DOMContentLoaded", () => {
       fecha_inicio_alquiler: fechaInicioInput.value,
       id_casa: idCasaInput.value,
     };
-  
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    })
+
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      }
+    )
       .then((respuesta) => respuesta.json())
       .then((data) => {
         // Verificar si hubo un error en el backend
@@ -195,21 +168,23 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("Hubo un problema al editar el registro.");
       });
   }
-  
 
   function eliminarRegistro() {
     const datos = { DNI: dniInput.value };
 
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    })
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      }
+    )
       .then((respuesta) => respuesta.json())
       .then(() => {
         limpiarFormulario();
         inicializarTabla();
-        alert('Se elimino correctamente');
+        alert("Se elimino correctamente");
       })
       .catch((error) => {
         console.error("Error al eliminar el registro:", error);
@@ -219,11 +194,14 @@ window.addEventListener("DOMContentLoaded", () => {
   function buscar() {
     const datos = { DNI: dniInputBuscar.value };
 
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    })
+    fetch(
+      "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+      }
+    )
       .then((respuesta) => respuesta.json())
       .then((datos) => {
         limpiarTabla();
