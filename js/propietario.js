@@ -123,7 +123,7 @@ window.addEventListener("DOMContentLoaded", () => {
         alert("El DNI existe en Inquilino")
       }else{
         fetch(
-          "https://api-alquiler-production.up.railway.app/controlador/inquilino.php",
+          "https://api-alquiler-production.up.railway.app/controlador/propietario.php",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
