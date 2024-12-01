@@ -104,8 +104,6 @@ window.addEventListener("DOMContentLoaded", () => {
       nombre: nombreInput.value,
       telefono: telefonoInput.value,
       email: emailInput.value,
-      fecha_inicio_alquiler: fechaInicioInput.value,
-      id_casa: idCasaInput.value,
     };
   
     const datos2 = { DNI: dniInput.value };
