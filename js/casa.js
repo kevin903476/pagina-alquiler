@@ -113,6 +113,7 @@ window.addEventListener("DOMContentLoaded", () => {
     })
     .then((respuesta) => respuesta.json())
     .then((data) => {
+        console(data)
         limpiarFormulario();
         inicializarTabla();
     })
