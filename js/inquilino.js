@@ -148,13 +148,13 @@ window.addEventListener("DOMContentLoaded", () => {
           console.error("Error al buscar el registro:", error);
         });
 
-    if (existe) {
+    if (existe == true) {
       alert('El DNI ya existe en un propietario o en un inquilino');
     }else{
       fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datos),
+          body: JSON.stringify(datos)
       })
       .then((respuesta) => respuesta.json())
       .then((datos) => {
