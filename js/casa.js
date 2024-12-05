@@ -105,25 +105,31 @@ window.addEventListener("DOMContentLoaded", () => {
         precio_alquiler: precioAlquilerInput.value,
         DNI_propietario: dniPropietarioInput.value,
     };
+    if (direccionInput.value == "" || ciudadInput.value == "" || precioAlquilerInput.value == "" || dniPropietarioInput.value == "" ) {
+      alert("Ingresa todos los campos")
+    } else{
 
-    fetch("https://api-alquiler-production.up.railway.app/controlador/casa.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
-    })
-    .then((respuesta) => respuesta.json())
-    .then((data) => {
-          // Verificar si hubo un error en el backend
-          if (data.error) {
-            alert("Error: " + data.error); // Mostrar el error al usuario
-          } else {
-            limpiarFormulario();
-            inicializarTabla(); // Si todo está bien, actualizamos la tabla
-          }
-    })
-    .catch((error) => {
-        alert('Hubo un problema al ingresar Casa'); 
-    });
+        fetch("https://api-alquiler-production.up.railway.app/controlador/casa.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
+      })
+      .then((respuesta) => respuesta.json())
+      .then((data) => {
+            // Verificar si hubo un error en el backend
+            if (data.error) {
+              alert("Error: " + data.error); // Mostrar el error al usuario
+            } else {
+              limpiarFormulario();
+              inicializarTabla(); // Si todo está bien, actualizamos la tabla
+            }
+      })
+      .catch((error) => {
+          alert('Hubo un problema al ingresar Casa'); 
+      });
+    }
+
+
 }
 
 function editarRegistro() {

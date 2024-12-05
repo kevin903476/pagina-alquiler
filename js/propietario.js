@@ -105,53 +105,55 @@ window.addEventListener("DOMContentLoaded", () => {
       telefono: telefonoInput.value,
       email: emailInput.value,
     };
-  
-    const datosB = { DNI: dniInput.value };
-  
-    // Validar si el DNI ya existe
-  
-    fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
-      method: "PATCH", // Método HTTP
-      headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
-      body: JSON.stringify(datosB), // Convierte el objeto datos en formato JSON para enviarlo
-    })
-      .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
-      .then((datos) => {
-        
-        console.log(datos.length)
-      if (datos.length >= 1) {
-        alert("El DNI existe en Inquilino")
-      }else{
-        fetch(
-          "https://api-alquiler-production.up.railway.app/controlador/propietario.php",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(datosIn),
-          }
-        )
-        .then((respuesta) => respuesta.json())
-        .then((data) => {
-          // Verificar si hubo un error en el backend
-          if (data.error) {
-            alert("Error: " + data.error); // Mostrar el error al usuario
-          } else {
-            limpiarFormulario();
-            inicializarTabla(); // Si todo está bien, actualizamos la tabla
-          }
+    if (dniInput.value == "" || nombreInput.value == "" || telefonoInput.value == "" || emailInput.value == "") {
+      alert("Ingresa todos los campos")
+    }else{
+      const datosB = { DNI: dniInput.value };
+    
+      // Validar si el DNI ya existe
+    
+      fetch("https://api-alquiler-production.up.railway.app/controlador/inquilino.php", {
+        method: "PATCH", // Método HTTP
+        headers: { "Content-Type": "application/json" }, // Cabecera indicando que se envía JSON
+        body: JSON.stringify(datosB), // Convierte el objeto datos en formato JSON para enviarlo
+      })
+        .then((respuesta) => respuesta.json()) // Decodifica el JSON de la respuesta
+        .then((datos) => {
+          
+          console.log(datos.length)
+        if (datos.length >= 1) {
+          alert("El DNI existe en Inquilino")
+        }else{
+          fetch(
+            "https://api-alquiler-production.up.railway.app/controlador/propietario.php",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(datosIn),
+            }
+          )
+          .then((respuesta) => respuesta.json())
+          .then((data) => {
+            // Verificar si hubo un error en el backend
+            if (data.error) {
+              alert("Error: " + data.error); // Mostrar el error al usuario
+            } else {
+              limpiarFormulario();
+              inicializarTabla(); // Si todo está bien, actualizamos la tabla
+            }
+          })
+          .catch((error) => {
+            alert("Hubo un problema al registrar Propietario.");
+          });
+
+          
+        }
+
         })
         .catch((error) => {
-          alert("Hubo un problema al registrar Propietario.");
+          alert("Hubo un problema");
         });
-
-        
-      }
-
-      })
-      .catch((error) => {
-        alert("Hubo un problema");
-      });
-
+    }   
   }
 
   function editarRegistro() {
